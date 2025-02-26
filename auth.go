@@ -1,6 +1,7 @@
 package main
 
 import (
+	c "context"
 	"net/http"
 	"strings"
 )
@@ -18,6 +19,9 @@ func TokenAuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 			http.Error(w, "Forbidden", http.StatusForbidden)
 			return
 		}
+
+		ctx := c.WithValue(r.Context(), "productId", productId)
+		r = r.WithContext(ctx)
 
 		next.ServeHTTP(w, r)
 	}
