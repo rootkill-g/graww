@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 )
 
@@ -51,7 +50,6 @@ func AddNewProduct(w http.ResponseWriter, r *http.Request) {
 
 func UpdateProductInfo(w http.ResponseWriter, r *http.Request) {
 	var productId = r.URL.Query().Get("productId")
-	log.Println("Received Product ID:", productId)
 	productInfo, ok := database[productId]
 	if !ok || productId == "" {
 		http.Error(w, "Forbidden", http.StatusForbidden)
@@ -65,7 +63,6 @@ func UpdateProductInfo(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 	// Update the product information
-	log.Println("Decoded JSON payload data is:", payloadData)
 	productInfo.Id = productId
 	productInfo.Name = payloadData.Name
 	productInfo.Price = payloadData.Price
