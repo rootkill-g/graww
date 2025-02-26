@@ -10,13 +10,13 @@ type ProductInfo struct {
 
 // In-memory database
 var database = map[string]ProductInfo{
-	"Light Phone III": {
-		Id:          "LP1",
-		Name:        "Light Phone III",
+	"LP3": {
+		Id:          "LP3",
+		Name:        "Light Phone 3",
 		Price:       "$599",
 		Description: "A phone designed to give you the tools to flourish as the most thoughtful & intentional version of yourself.",
 	},
-	"Fairphone 5": {
+	"F5": {
 		Id:          "F5",
 		Name:        "Fairphone 5",
 		Price:       "$599",
