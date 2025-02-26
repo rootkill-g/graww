@@ -19,15 +19,10 @@ func handleProductInfo(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetProduct(w http.ResponseWriter, r *http.Request) {
-	var productId = r.URL.Query().Get("productId")
-	productInfo, ok := database[productId]
-	if !ok || productId == "" {
-		http.Error(w, "Forbidden", http.StatusForbidden)
-		return
-	}
+	productInfo := r.Context().Value("productInfo").(ProductInfo)
 	w.Header().Set("Content-Type", "application/json")
 	response := ProductInfo{
-		Id:          productId,
+		Id:          productInfo.Id,
 		Name:        productInfo.Name,
 		Price:       productInfo.Price,
 		Description: productInfo.Description,
@@ -49,12 +44,7 @@ func AddNewProduct(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateProductInfo(w http.ResponseWriter, r *http.Request) {
-	var productId = r.URL.Query().Get("productId")
-	productInfo, ok := database[productId]
-	if !ok || productId == "" {
-		http.Error(w, "Forbidden", http.StatusForbidden)
-		return
-	}
+	productInfo := r.Context().Value("productInfo").(ProductInfo)
 	// Decode the JSON payload directly into the struct
 	var payloadData ProductInfo
 	if err := json.NewDecoder(r.Body).Decode(&payloadData); err != nil {
@@ -63,7 +53,6 @@ func UpdateProductInfo(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 	// Update the product information
-	productInfo.Id = productId
 	productInfo.Name = payloadData.Name
 	productInfo.Price = payloadData.Price
 	productInfo.Description = payloadData.Description
