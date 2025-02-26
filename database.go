@@ -23,3 +23,13 @@ var database = map[string]ProductInfo{
 		Description: "The smartphone that lasts a long time",
 	},
 }
+
+// NOTE: This is to demonstrate the application's auth functionality
+type Admin struct {
+	Token string
+}
+
+// WARN: Bad practise to keep creds hard-coded. But this is just for the sake of demo
+var adminTk = Admin{
+	Token: "1234567890",
+}
