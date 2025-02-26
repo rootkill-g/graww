@@ -15,7 +15,7 @@ func TokenAuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 		token := r.Header.Get("Authorization")
-		if !isValidToken(productInfo, token) {
+		if !isValidToken(token) {
 			http.Error(w, "Forbidden", http.StatusForbidden)
 			return
 		}
@@ -27,9 +27,9 @@ func TokenAuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-func isValidToken(productInfo ProductInfo, token string) bool {
+func isValidToken(token string) bool {
 	if strings.HasPrefix(token, "Bearer ") {
-		return strings.TrimPrefix(token, "Bearer ") == productInfo.Token
+		return strings.TrimPrefix(token, "Bearer ") == adminTk.Token
 	}
 	return false
 }
