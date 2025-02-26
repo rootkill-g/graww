@@ -20,7 +20,7 @@ func TokenAuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 
-		ctx := c.WithValue(r.Context(), "productId", productId)
+		ctx := c.WithValue(r.Context(), "productInfo", productInfo)
 		r = r.WithContext(ctx)
 
 		next.ServeHTTP(w, r)
