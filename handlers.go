@@ -31,15 +31,14 @@ func GetProduct(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddNewProduct(w http.ResponseWriter, r *http.Request) {
-	var productId = r.URL.Query().Get("productId")
 	// Decode the JSON payload directly into the struct
 	var payloadData ProductInfo
-	if err := json.NewDecoder(r.Body).Decode(&payloadData); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&payloadData); err != nil || payloadData.Id == "" || payloadData.Name == "" || payloadData.Price == "" || payloadData.Description == "" {
 		http.Error(w, "Bad Request", http.StatusBadRequest)
 		return
 	}
 	defer r.Body.Close()
-	database[productId] = payloadData
+	database[payloadData.Id] = payloadData
 	w.WriteHeader(http.StatusCreated)
 }
 
