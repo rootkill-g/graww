@@ -8,22 +8,34 @@ import (
 
 func TokenAuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var productId = r.URL.Query().Get("productId")
-		productInfo, ok := database[productId]
-		if !ok || productId == "" {
-			http.Error(w, "Forbidden", http.StatusForbidden)
-			return
-		}
-		token := r.Header.Get("Authorization")
-		if !isValidToken(token) {
-			http.Error(w, "Forbidden", http.StatusForbidden)
-			return
-		}
+		if r.Method != "POST" {
+			var productId = r.URL.Query().Get("productId")
 
-		ctx := c.WithValue(r.Context(), "productInfo", productInfo)
-		r = r.WithContext(ctx)
+			productInfo, ok := database[productId]
 
-		next.ServeHTTP(w, r)
+			if !ok || productId == "" {
+				http.Error(w, "Forbidden", http.StatusForbidden)
+				return
+			}
+
+			tokenChecker(w, r)
+
+			ctx := c.WithValue(r.Context(), "productInfo", productInfo)
+			r = r.WithContext(ctx)
+
+			next.ServeHTTP(w, r)
+		} else {
+			tokenChecker(w, r)
+			next.ServeHTTP(w, r)
+		}
+	}
+}
+
+func tokenChecker(w http.ResponseWriter, r *http.Request) {
+	token := r.Header.Get("Authorization")
+	if !isValidToken(token) {
+		http.Error(w, "Forbidden", http.StatusForbidden)
+		return
 	}
 }
 
