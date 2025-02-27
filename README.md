@@ -55,6 +55,6 @@ Is there a discount on a product? You may need to edit a product's information. 
 curl -X PATCH -H "Authorization: Bearer 1234567890" -H 'Content-Type: application/json' -d '{"price":"$999"}' http://localhost:8080/product/info?productId=SGS25U
 ```
 
----
+<hr />
 
 Happy Cataloging 🦁
